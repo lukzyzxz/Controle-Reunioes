@@ -1,173 +1,44 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f9f6f2;
-  color: #222;
-  margin: 0;
-  padding: 0;
-  transition: background 0.3s, color 0.3s;
-}
-
-header {
-  background-color: #5a2d0c;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-}
-
-h1 {
-  margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #222;
+    text-align: center;
+    margin: 20px;
 }
 
 button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 8px;
-  background-color: #5a2d0c;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #7a3a12;
-}
-
-form {
-  max-width: 600px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-label {
-  font-weight: bold;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 12px;
-}
-
-.botoes {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-table {
-  width: 95%;
-  margin: 20px auto;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #b3a48b;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #e6dccf;
-}
-
-/* ====== DARK MODE ====== */
-.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
-
-.dark-mode header {
-  background-color: #1e1e1e;
-}
-
-.dark-mode button {
-  background-color: #333;
-}
-
-.dark-mode button:hover {
-  background-color: #555;
-}
-
-.dark-mode table {
-  border-color: #444;
-}
-
-.dark-mode th {
-  background-color: #2a2a2a;
-}
-/* ===== TELA DE LOGIN ===== */
-.login-body {
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.login-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    width: 300px;
-    text-align: center;
-}
-
-.login-container h2 {
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-.login-container input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
-.login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4e73df;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 8px;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
-.login-container button:hover {
-    background-color: #3b5bcc;
+button:hover {
+    background-color: #0056b3;
 }
 
-.erro {
-    color: red;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
 }
 
-/* User area */
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.modo-escuro {
+    background-color: #121212;
+    color: #eaeaea;
 }
 
-.logout {
-    background-color: crimson;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 8px;
-    text-decoration: none;
+.modo-escuro button {
+    background-color: #444;
+    color: #fff;
 }
 
-.logout:hover {
-    background-color: darkred;
+.modo-escuro button:hover {
+    background-color: #666;
+}
+
+.modo-escuro table {
+    border-color: #666;
 }
