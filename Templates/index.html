@@ -1,78 +1,46 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agenda Sacramental</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Painel de Reuniões Sacramentais</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function alternarModo() {
+            document.body.classList.toggle("modo-escuro");
+            localStorage.setItem("modoEscuro", document.body.classList.contains("modo-escuro"));
+        }
+        window.onload = function() {
+            if (localStorage.getItem("modoEscuro") === "true") {
+                document.body.classList.add("modo-escuro");
+            }
+        }
+    </script>
 </head>
 <body>
-  <header>
-    <h1>Agenda de Reuniões Sacramentais</h1>
-    <div class="user-area">
-        <span>👤 {{ usuario }}</span>
-        <button id="modoBtn">🌙 Modo Escuro</button>
-        <a href="/logout" class="logout">Sair</a>
-    </div>
-</header>
+    <button onclick="alternarModo()">🌙 Alternar Modo Escuro</button>
 
+    <h1>📅 Painel de Reuniões Sacramentais</h1>
+    <p>Usuário logado: {{ usuario }}</p>
 
-  <main>
-    <form method="POST">
-      <label for="data">Data:</label>
-      <input type="date" id="data" name="data" required>
+    <form method="POST" action="/adicionar">
+        <label>Data:</label><br>
+        <input type="date" name="data" required><br><br>
 
-      <label for="presidida">Presidida:</label>
-      <input type="text" id="presidida" name="presidida">
+        <label>Tema:</label><br>
+        <input type="text" name="tema" required><br><br>
 
-      <label for="dirigida">Dirigida:</label>
-      <input type="text" id="dirigida" name="dirigida">
+        <label>Orador:</label><br>
+        <input type="text" name="orador" required><br><br>
 
-      <label for="regente">Regente:</label>
-      <input type="text" id="regente" name="regente">
+        <label>Observações:</label><br>
+        <textarea name="observacoes"></textarea><br><br>
 
-      <label for="pianista">Pianista:</label>
-      <input type="text" id="pianista" name="pianista">
-
-      <label for="anuncios">Anúncios:</label>
-      <input type="text" id="anuncios" name="anuncios">
-
-      <label for="primeira_oracao">Primeira Oração:</label>
-      <input type="text" id="primeira_oracao" name="primeira_oracao">
-
-      <label for="ultima_oracao">Última Oração:</label>
-      <input type="text" id="ultima_oracao" name="ultima_oracao">
-
-      <h3>Hinos</h3>
-      <label for="hino_inicial">Hino Inicial:</label>
-      <input type="text" id="hino_inicial" name="hino_inicial">
-
-      <label for="hino_sacramental">Hino Sacramental:</label>
-      <input type="text" id="hino_sacramental" name="hino_sacramental">
-
-      <label for="hino_especial">Hino Especial:</label>
-      <input type="text" id="hino_especial" name="hino_especial">
-
-      <label for="hino_intermediario">Hino Intermediário:</label>
-      <input type="text" id="hino_intermediario" name="hino_intermediario">
-
-      <label for="hino_final">Hino Final:</label>
-      <input type="text" id="hino_final" name="hino_final">
-
-      <label for="oradores">Oradores:</label>
-      <textarea id="oradores" name="oradores" rows="3"></textarea>
-
-      <label for="observacoes">Observações:</label>
-      <textarea id="observacoes" name="observacoes" rows="3"></textarea>
-
-      <div class="botoes">
-        <button type="submit">💾 Salvar Reunião</button>
-        <a href="{{ url_for('historico') }}"><button type="button">📜 Ver Histórico</button></a>
-      </div>
+        <button type="submit">➕ Adicionar Reunião</button>
     </form>
-  </main>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <hr>
+
+    <a href="{{ url_for('historico') }}"><button>📜 Ver Histórico</button></a>
+    <a href="{{ url_for('logout') }}"><button>🚪 Sair</button></a>
 </body>
 </html>
-

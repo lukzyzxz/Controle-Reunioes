@@ -31,9 +31,9 @@ def init_db():
 init_db()
 
 # --------------------- ROTAS ---------------------
+
 @app.route('/')
 def home():
-    # Se o usuário estiver logado, vai para a página principal
     if 'usuario' in session:
         return redirect(url_for('painel'))
     return redirect(url_for('login'))
@@ -59,7 +59,7 @@ def logout():
     session.pop('usuario', None)
     return redirect(url_for('login'))
 
-# --------------------- PÁGINA PRINCIPAL (PAINEL) ---------------------
+# --------------------- PAINEL PRINCIPAL ---------------------
 @app.route('/painel')
 def painel():
     if 'usuario' not in session:
@@ -71,21 +71,6 @@ def painel():
     reunioes = c.fetchall()
     conn.close()
 
-    return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
-
-# --------------------- HISTÓRICO (OPCIONAL) ---------------------
-@app.route('/historico')
-def historico():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
-    reunioes = c.fetchall()
-    conn.close()
-
-    # Usa a mesma página principal, só muda o título
     return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
 
 # --------------------- ADICIONAR REUNIÃO ---------------------
@@ -107,6 +92,23 @@ def adicionar():
     conn.close()
 
     return redirect(url_for('painel'))
+
+# --------------------- HISTÓRICO DE REUNIÕES ---------------------
+@app.route('/historico')
+def historico():
+    # Verifica login antes de permitir acesso
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
+    reunioes = c.fetchall()
+    conn.close()
+
+    # Renderiza página separada de histórico
+    return render_template('historico.html', reunioes=reunioes, usuario=session['usuario'])
+
 # --------------------- EXECUÇÃO ---------------------
 if __name__ == '__main__':
     app.run(debug=True)
