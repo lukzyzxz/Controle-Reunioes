@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Reuniões</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Histórico de Reuniões</h1>
+    <a href="/"><button>← Voltar</button></a>
+    <button id="toggleTheme">🌙 Modo Escuro</button>
+  </header>
+
+  <main>
+    <section class="bloco">
+      <table>
+        <tr>
+          <th>Data</th>
+          <th>Presidida</th>
+          <th>Dirigida</th>
+          <th>Regente</th>
+          <th>Pianista</th>
+          <th>Observações</th>
+        </tr>
+        {% for r in reunioes %}
+        <tr>
+          <td>{{ r[1] }}</td>
+          <td>{{ r[2] }}</td>
+          <td>{{ r[3] }}</td>
+          <td>{{ r[4] }}</td>
+          <td>{{ r[5] }}</td>
+          <td>{{ r[14] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
