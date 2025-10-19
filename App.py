@@ -107,22 +107,6 @@ def adicionar():
     conn.close()
 
     return redirect(url_for('painel'))
-
-#----------------------Hist--------------------------
-@app.route('/historico')
-def historico():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
-    reunioes = c.fetchall()
-    conn.close()
-
-    # Mostra o mesmo conteúdo da página principal
-    return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
-
 # --------------------- EXECUÇÃO ---------------------
 if __name__ == '__main__':
     app.run(debug=True)

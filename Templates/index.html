@@ -8,9 +8,14 @@
 </head>
 <body>
   <header>
-    <h1>Agenda Sacramental</h1>
-    <button id="toggleTheme">🌙 Modo Escuro</button>
-  </header>
+    <h1>Agenda de Reuniões Sacramentais</h1>
+    <div class="user-area">
+        <span>👤 {{ usuario }}</span>
+        <button id="modoBtn">🌙 Modo Escuro</button>
+        <a href="/logout" class="logout">Sair</a>
+    </div>
+</header>
+
 
   <main>
     <form method="POST">
