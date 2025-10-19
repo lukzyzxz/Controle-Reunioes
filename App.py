@@ -1,81 +1,97 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "chave_super_secreta_para_sessoes"  # Necessário para login funcionar
 
-# ---------- CRIAR BANCO ----------
+# --------------------- USUÁRIOS ---------------------
+Usuarios = {
+    "admin": "admin123",
+    "bispo": "bispo123",
+    "conselheiro1": "cons1",
+    "conselheiro2": "cons2",
+    "secretario": "secret123"
+}
+
+# --------------------- BANCO DE DADOS ---------------------
 def init_db():
-    with sqlite3.connect("database.db") as conn:
-        c = conn.cursor()
-        c.execute("""
-            CREATE TABLE IF NOT EXISTS reunioes (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                data TEXT,
-                presidida TEXT,
-                dirigida TEXT,
-                regente TEXT,
-                pianista TEXT,
-                anuncios TEXT,
-                primeira_oracao TEXT,
-                ultima_oracao TEXT,
-                hino_inicial TEXT,
-                hino_sacramental TEXT,
-                hino_especial TEXT,
-                hino_intermediario TEXT,
-                hino_final TEXT,
-                oradores TEXT,
-                observacoes TEXT
-            )
-        """)
-        conn.commit()
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS reunioes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    data TEXT NOT NULL,
+                    tema TEXT NOT NULL,
+                    orador TEXT NOT NULL,
+                    observacoes TEXT
+                )''')
+    conn.commit()
+    conn.close()
 
-# ---------- ROTA PRINCIPAL ----------
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        dados = (
-            request.form.get("data"),
-            request.form.get("presidida"),
-            request.form.get("dirigida"),
-            request.form.get("regente"),
-            request.form.get("pianista"),
-            request.form.get("anuncios"),
-            request.form.get("primeira_oracao"),
-            request.form.get("ultima_oracao"),
-            request.form.get("hino_inicial"),
-            request.form.get("hino_sacramental"),
-            request.form.get("hino_especial"),
-            request.form.get("hino_intermediario"),
-            request.form.get("hino_final"),
-            request.form.get("oradores"),
-            request.form.get("observacoes")
-        )
+init_db()
 
-        with sqlite3.connect("database.db") as conn:
-            c = conn.cursor()
-            c.execute("""
-                INSERT INTO reunioes (
-                    data, presidida, dirigida, regente, pianista, anuncios,
-                    primeira_oracao, ultima_oracao, hino_inicial, hino_sacramental,
-                    hino_especial, hino_intermediario, hino_final, oradores, observacoes
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, dados)
-            conn.commit()
+# --------------------- ROTAS ---------------------
+@app.route('/')
+def home():
+    # Se o usuário estiver logado, vai para a página principal
+    if 'usuario' in session:
+        return redirect('/painel')
+    return redirect('/login')
 
-        return redirect(url_for("historico"))
+# Tela de login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        senha = request.form['senha']
 
-    return render_template("index.html")
+        if usuario in Usuarios and Usuarios[usuario] == senha:
+            session['usuario'] = usuario
+            return redirect('/painel')
+        else:
+            return render_template('login.html', erro="Usuário ou senha incorretos.")
 
-# ---------- ROTA HISTÓRICO ----------
-@app.route("/historico")
-def historico():
-    with sqlite3.connect("database.db") as conn:
-        c = conn.cursor()
-        c.execute("SELECT * FROM reunioes ORDER BY data DESC")
-        reunioes = c.fetchall()
-    return render_template("historico.html", reunioes=reunioes)
+    return render_template('login.html')
 
-if __name__ == "__main__":
-    init_db()
+# Logout
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect('/login')
+
+# Página principal (painel)
+@app.route('/painel')
+def painel():
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
+    reunioes = c.fetchall()
+    conn.close()
+
+    return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
+
+# Rota para adicionar reunião
+@app.route('/adicionar', methods=['POST'])
+def adicionar():
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    data = request.form['data']
+    tema = request.form['tema']
+    orador = request.form['orador']
+    observacoes = request.form['observacoes']
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO reunioes (data, tema, orador, observacoes) VALUES (?, ?, ?, ?)",
+              (data, tema, orador, observacoes))
+    conn.commit()
+    conn.close()
+
+    return redirect('/painel')
+
+if __name__ == '__main__':
     app.run(debug=True)
