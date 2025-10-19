@@ -35,10 +35,10 @@ init_db()
 def home():
     # Se o usuário estiver logado, vai para a página principal
     if 'usuario' in session:
-        return redirect('/painel')
-    return redirect('/login')
+        return redirect(url_for('painel'))
+    return redirect(url_for('login'))
 
-# Tela de login
+# --------------------- LOGIN ---------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -47,23 +47,23 @@ def login():
 
         if usuario in Usuarios and Usuarios[usuario] == senha:
             session['usuario'] = usuario
-            return redirect('/painel')
+            return redirect(url_for('painel'))
         else:
             return render_template('login.html', erro="Usuário ou senha incorretos.")
 
     return render_template('login.html')
 
-# Logout
+# --------------------- LOGOUT ---------------------
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
-    return redirect('/login')
+    return redirect(url_for('login'))
 
-# Página principal (painel)
+# --------------------- PÁGINA PRINCIPAL (PAINEL) ---------------------
 @app.route('/painel')
 def painel():
     if 'usuario' not in session:
-        return redirect('/login')
+        return redirect(url_for('login'))
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
@@ -73,11 +73,26 @@ def painel():
 
     return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
 
-# Rota para adicionar reunião
+# --------------------- HISTÓRICO (OPCIONAL) ---------------------
+@app.route('/historico')
+def historico():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
+    reunioes = c.fetchall()
+    conn.close()
+
+    # Usa a mesma página principal, só muda o título
+    return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
+
+# --------------------- ADICIONAR REUNIÃO ---------------------
 @app.route('/adicionar', methods=['POST'])
 def adicionar():
     if 'usuario' not in session:
-        return redirect('/login')
+        return redirect(url_for('login'))
 
     data = request.form['data']
     tema = request.form['tema']
@@ -91,7 +106,23 @@ def adicionar():
     conn.commit()
     conn.close()
 
-    return redirect('/painel')
+    return redirect(url_for('painel'))
 
+#----------------------Hist--------------------------
+@app.route('/historico')
+def historico():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM reunioes ORDER BY data DESC")
+    reunioes = c.fetchall()
+    conn.close()
+
+    # Mostra o mesmo conteúdo da página principal
+    return render_template('index.html', reunioes=reunioes, usuario=session['usuario'])
+
+# --------------------- EXECUÇÃO ---------------------
 if __name__ == '__main__':
     app.run(debug=True)
