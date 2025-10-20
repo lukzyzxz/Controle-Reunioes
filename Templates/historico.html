@@ -4,21 +4,8 @@
     <meta charset="UTF-8">
     <title>Histórico de Reuniões</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        function alternarModo() {
-            document.body.classList.toggle("modo-escuro");
-            localStorage.setItem("modoEscuro", document.body.classList.contains("modo-escuro"));
-        }
-        window.onload = function() {
-            if (localStorage.getItem("modoEscuro") === "true") {
-                document.body.classList.add("modo-escuro");
-            }
-        }
-    </script>
 </head>
 <body>
-    <button onclick="alternarModo()">🌙 Alternar Modo Escuro</button>
-
     <h1>📜 Histórico de Reuniões</h1>
     <p>Usuário logado: {{ usuario }}</p>
 
@@ -27,13 +14,17 @@
             <tr>
                 <th>Data</th>
                 <th>Tema</th>
-                <th>Dirigente</th>
-                <th>Orador</th>
+                <th>Presidindo</th>
+                <th>Dirigindo</th>
                 <th>Hino Inicial</th>
+                <th>Primeira Oração</th>
+                <th>Anúncios/Apoios</th>
                 <th>Hino Sacramental</th>
+                <th>1º Orador</th>
+                <th>2º Orador</th>
+                <th>3º Orador</th>
                 <th>Hino Final</th>
-                <th>Oração Inicial</th>
-                <th>Oração Final</th>
+                <th>Última Oração</th>
                 <th>Membros Presentes</th>
                 <th>Observações</th>
             </tr>
@@ -52,13 +43,16 @@
                 <td>{{ r[9] }}</td>
                 <td>{{ r[10] }}</td>
                 <td>{{ r[11] }}</td>
+                <td>{{ r[12] }}</td>
+                <td>{{ r[13] }}</td>
+                <td>{{ r[14] }}</td>
+                <td>{{ r[15] }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <br>
-    <a href="{{ url_for('painel') }}"><button>⬅ Voltar ao Painel</button></a>
-    <a href="{{ url_for('logout') }}"><button>🚪 Sair</button></a>
+    <a href="{{ url_for('painel') }}"><button>⬅ Voltar</button></a>
 </body>
 </html>
