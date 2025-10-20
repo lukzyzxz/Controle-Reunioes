@@ -22,13 +22,17 @@ def init_db():
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     data TEXT NOT NULL,
                     tema TEXT NOT NULL,
-                    dirigente TEXT,
-                    orador TEXT,
+                    presidindo TEXT,
+                    dirigindo TEXT,
                     hino_inicial TEXT,
+                    primeira_oracao TEXT,
+                    anuncios_apoios TEXT,
                     hino_sacramental TEXT,
+                    primeiro_orador TEXT,
+                    segundo_orador TEXT,
+                    terceiro_orador TEXT,
                     hino_final TEXT,
-                    oracao_inicial TEXT,
-                    oracao_final TEXT,
+                    ultima_oracao TEXT,
                     membros_presentes INTEGER,
                     observacoes TEXT
                 )''')
@@ -88,13 +92,17 @@ def adicionar():
     dados = (
         request.form['data'],
         request.form['tema'],
-        request.form['dirigente'],
-        request.form['orador'],
+        request.form['presidindo'],
+        request.form['dirigindo'],
         request.form['hino_inicial'],
+        request.form['primeira_oracao'],
+        request.form['anuncios_apoios'],
         request.form['hino_sacramental'],
+        request.form['primeiro_orador'],
+        request.form['segundo_orador'],
+        request.form['terceiro_orador'],
         request.form['hino_final'],
-        request.form['oracao_inicial'],
-        request.form['oracao_final'],
+        request.form['ultima_oracao'],
         request.form['membros_presentes'],
         request.form['observacoes']
     )
@@ -102,9 +110,10 @@ def adicionar():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     c.execute('''INSERT INTO reunioes 
-                 (data, tema, dirigente, orador, hino_inicial, hino_sacramental, hino_final,
-                  oracao_inicial, oracao_final, membros_presentes, observacoes)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', dados)
+                 (data, tema, presidindo, dirigindo, hino_inicial, primeira_oracao,
+                  anuncios_apoios, hino_sacramental, primeiro_orador, segundo_orador,
+                  terceiro_orador, hino_final, ultima_oracao, membros_presentes, observacoes)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', dados)
     conn.commit()
     conn.close()
 

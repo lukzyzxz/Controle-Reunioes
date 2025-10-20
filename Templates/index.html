@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel de Reuniões Sacramentais</title>
+    <title>Painel - Reuniões Sacramentais</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
         function alternarModo() {
@@ -29,28 +29,40 @@
         <label>Tema:</label><br>
         <input type="text" name="tema" required><br><br>
 
-        <label>Dirigente:</label><br>
-        <input type="text" name="dirigente" required><br><br>
+        <label>Presidindo a reunião:</label><br>
+        <input type="text" name="presidindo" required><br><br>
 
-        <label>Orador:</label><br>
-        <input type="text" name="orador" required><br><br>
+        <label>Dirigindo a reunião:</label><br>
+        <input type="text" name="dirigindo" required><br><br>
 
-        <label>Hino Inicial:</label><br>
+        <label>Hino inicial:</label><br>
         <input type="text" name="hino_inicial"><br><br>
 
-        <label>Hino Sacramental:</label><br>
+        <label>Primeira oração:</label><br>
+        <input type="text" name="primeira_oracao"><br><br>
+
+        <label>Anúncios / Apoios (opcional):</label><br>
+        <input type="text" name="anuncios_apoios"><br><br>
+
+        <label>Hino sacramental:</label><br>
         <input type="text" name="hino_sacramental"><br><br>
 
-        <label>Hino Final:</label><br>
+        <label>Primeiro orador:</label><br>
+        <input type="text" name="primeiro_orador"><br><br>
+
+        <label>Segundo orador:</label><br>
+        <input type="text" name="segundo_orador"><br><br>
+
+        <label>Terceiro orador:</label><br>
+        <input type="text" name="terceiro_orador"><br><br>
+
+        <label>Hino final:</label><br>
         <input type="text" name="hino_final"><br><br>
 
-        <label>Oração Inicial:</label><br>
-        <input type="text" name="oracao_inicial"><br><br>
+        <label>Última oração:</label><br>
+        <input type="text" name="ultima_oracao"><br><br>
 
-        <label>Oração Final:</label><br>
-        <input type="text" name="oracao_final"><br><br>
-
-        <label>Número de Membros Presentes:</label><br>
+        <label>Número de membros presentes:</label><br>
         <input type="number" name="membros_presentes" min="0"><br><br>
 
         <label>Observações:</label><br>
@@ -60,7 +72,6 @@
     </form>
 
     <hr>
-
     <a href="{{ url_for('historico') }}"><button>📜 Ver Histórico</button></a>
     <a href="{{ url_for('logout') }}"><button>🚪 Sair</button></a>
 </body>
