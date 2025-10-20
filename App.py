@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "chave_super_secreta_para_sessoes"  # Necessário para login funcionar
+app.secret_key = "chave_super_secreta_para_sessoes"
 
 # --------------------- USUÁRIOS ---------------------
 Usuarios = {
@@ -22,7 +22,14 @@ def init_db():
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     data TEXT NOT NULL,
                     tema TEXT NOT NULL,
-                    orador TEXT NOT NULL,
+                    dirigente TEXT,
+                    orador TEXT,
+                    hino_inicial TEXT,
+                    hino_sacramental TEXT,
+                    hino_final TEXT,
+                    oracao_inicial TEXT,
+                    oracao_final TEXT,
+                    membros_presentes INTEGER,
                     observacoes TEXT
                 )''')
     conn.commit()
@@ -31,7 +38,6 @@ def init_db():
 init_db()
 
 # --------------------- ROTAS ---------------------
-
 @app.route('/')
 def home():
     if 'usuario' in session:
@@ -79,24 +85,34 @@ def adicionar():
     if 'usuario' not in session:
         return redirect(url_for('login'))
 
-    data = request.form['data']
-    tema = request.form['tema']
-    orador = request.form['orador']
-    observacoes = request.form['observacoes']
+    dados = (
+        request.form['data'],
+        request.form['tema'],
+        request.form['dirigente'],
+        request.form['orador'],
+        request.form['hino_inicial'],
+        request.form['hino_sacramental'],
+        request.form['hino_final'],
+        request.form['oracao_inicial'],
+        request.form['oracao_final'],
+        request.form['membros_presentes'],
+        request.form['observacoes']
+    )
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("INSERT INTO reunioes (data, tema, orador, observacoes) VALUES (?, ?, ?, ?)",
-              (data, tema, orador, observacoes))
+    c.execute('''INSERT INTO reunioes 
+                 (data, tema, dirigente, orador, hino_inicial, hino_sacramental, hino_final,
+                  oracao_inicial, oracao_final, membros_presentes, observacoes)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', dados)
     conn.commit()
     conn.close()
 
     return redirect(url_for('painel'))
 
-# --------------------- HISTÓRICO DE REUNIÕES ---------------------
+# --------------------- HISTÓRICO ---------------------
 @app.route('/historico')
 def historico():
-    # Verifica login antes de permitir acesso
     if 'usuario' not in session:
         return redirect(url_for('login'))
 
@@ -106,7 +122,6 @@ def historico():
     reunioes = c.fetchall()
     conn.close()
 
-    # Renderiza página separada de histórico
     return render_template('historico.html', reunioes=reunioes, usuario=session['usuario'])
 
 # --------------------- EXECUÇÃO ---------------------
