@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <title>Histórico de Reuniões</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function alternarModo() {
+            document.body.classList.toggle("modo-escuro");
+            localStorage.setItem("modoEscuro", document.body.classList.contains("modo-escuro"));
+        }
+        window.onload = function() {
+            if (localStorage.getItem("modoEscuro") === "true") {
+                document.body.classList.add("modo-escuro");
+            }
+        }
+    </script>
 </head>
 <body>
+    <button onclick="alternarModo()">🌙 Alternar Modo Escuro</button>
+
     <h1>📜 Histórico de Reuniões</h1>
     <p>Usuário logado: {{ usuario }}</p>
 
@@ -14,17 +27,31 @@
             <tr>
                 <th>Data</th>
                 <th>Tema</th>
+                <th>Dirigente</th>
                 <th>Orador</th>
+                <th>Hino Inicial</th>
+                <th>Hino Sacramental</th>
+                <th>Hino Final</th>
+                <th>Oração Inicial</th>
+                <th>Oração Final</th>
+                <th>Membros Presentes</th>
                 <th>Observações</th>
             </tr>
         </thead>
         <tbody>
-            {% for reuniao in reunioes %}
+            {% for r in reunioes %}
             <tr>
-                <td>{{ reuniao[1] }}</td>
-                <td>{{ reuniao[2] }}</td>
-                <td>{{ reuniao[3] }}</td>
-                <td>{{ reuniao[4] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+                <td>{{ r[3] }}</td>
+                <td>{{ r[4] }}</td>
+                <td>{{ r[5] }}</td>
+                <td>{{ r[6] }}</td>
+                <td>{{ r[7] }}</td>
+                <td>{{ r[8] }}</td>
+                <td>{{ r[9] }}</td>
+                <td>{{ r[10] }}</td>
+                <td>{{ r[11] }}</td>
             </tr>
             {% endfor %}
         </tbody>
