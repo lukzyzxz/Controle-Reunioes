@@ -2,77 +2,27 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel - Reuniões Sacramentais</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Agenda da Igreja</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        function alternarModo() {
-            document.body.classList.toggle("modo-escuro");
-            localStorage.setItem("modoEscuro", document.body.classList.contains("modo-escuro"));
-        }
-        window.onload = function() {
-            if (localStorage.getItem("modoEscuro") === "true") {
-                document.body.classList.add("modo-escuro");
-            }
-        }
-    </script>
 </head>
-<body>
-    <button onclick="alternarModo()">🌙 Alternar Modo Escuro</button>
+<body class="login-body">
 
-    <h1>📅 Painel de Reuniões Sacramentais</h1>
-    <p>Usuário logado: {{ usuario }}</p>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if erro %}
+        <p class="erro">{{ erro }}</p>
+        {% endif %}
+        <form method="POST">
+            <label>Usuário:</label>
+            <input type="text" name="usuario" required>
 
-    <form method="POST" action="/adicionar">
-        <label>Data:</label><br>
-        <input type="date" name="data" required><br><br>
+            <label>Senha:</label>
+            <input type="password" name="senha" required>
 
-        <label>Tema:</label><br>
-        <input type="text" name="tema" required><br><br>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
 
-        <label>Presidindo a reunião:</label><br>
-        <input type="text" name="presidindo" required><br><br>
-
-        <label>Dirigindo a reunião:</label><br>
-        <input type="text" name="dirigindo" required><br><br>
-
-        <label>Hino inicial:</label><br>
-        <input type="text" name="hino_inicial"><br><br>
-
-        <label>Primeira oração:</label><br>
-        <input type="text" name="primeira_oracao"><br><br>
-
-        <label>Anúncios / Apoios (opcional):</label><br>
-        <input type="text" name="anuncios_apoios"><br><br>
-
-        <label>Hino sacramental:</label><br>
-        <input type="text" name="hino_sacramental"><br><br>
-
-        <label>Primeiro orador:</label><br>
-        <input type="text" name="primeiro_orador"><br><br>
-
-        <label>Segundo orador:</label><br>
-        <input type="text" name="segundo_orador"><br><br>
-
-        <label>Terceiro orador:</label><br>
-        <input type="text" name="terceiro_orador"><br><br>
-
-        <label>Hino final:</label><br>
-        <input type="text" name="hino_final"><br><br>
-
-        <label>Última oração:</label><br>
-        <input type="text" name="ultima_oracao"><br><br>
-
-        <label>Número de membros presentes:</label><br>
-        <input type="number" name="membros_presentes" min="0"><br><br>
-
-        <label>Observações:</label><br>
-        <textarea name="observacoes"></textarea><br><br>
-
-        <button type="submit">➕ Registrar Reunião</button>
-    </form>
-
-    <hr>
-    <a href="{{ url_for('historico') }}"><button>📜 Ver Histórico</button></a>
-    <a href="{{ url_for('logout') }}"><button>🚪 Sair</button></a>
 </body>
 </html>
